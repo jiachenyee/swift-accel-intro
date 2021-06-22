@@ -9,15 +9,17 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var nameRotation = Angle(degrees: 30)
-    @State var rabbitTextRotation = Angle(degrees: 10)
-    @State var rabbitImageScale: CGFloat = 1
+    @State private var nameRotation = Angle(degrees: 30)
+    @State private var rabbitTextRotation = Angle(degrees: 10)
+    @State private var rabbitImageScale: CGFloat = 1
     
-    @State var videoButtonRotation = Angle(degrees: 15)
-    @State var gitHubButtonRotation = Angle(degrees: -10)
-    @State var instagramButtonRotation = Angle(degrees: 0)
+    @State private var videoButtonRotation = Angle(degrees: 15)
+    @State private var gitHubButtonRotation = Angle(degrees: -10)
+    @State private var instagramButtonRotation = Angle(degrees: 0)
     
-    @State var helloOffset: CGFloat = -50
+    @State private var helloOffset: CGFloat = -50
+    
+    @State private var phase: CGFloat = 0
     
     @Environment(\.openURL) var openURL
     
@@ -64,6 +66,13 @@ struct ContentView: View {
                         }
                         .padding(.leading)
                     }
+                    .overlay(
+                        Rectangle()
+                            .stroke(style: StrokeStyle(lineWidth: 4,
+                                                       lineCap: .round,
+                                                       dash: [0, 15],
+                                                       dashPhase: phase))
+                    )
                     .frame(width: 200, height: 150)
                     .rotation3DEffect(
                         rabbitTextRotation,
@@ -146,6 +155,10 @@ struct ContentView: View {
                 videoButtonRotation = Angle(degrees: 0)
                 gitHubButtonRotation = Angle(degrees: 5)
                 instagramButtonRotation = Angle(degrees: -15)
+            }
+            
+            withAnimation(.linear(duration: 0.5).repeatForever(autoreverses: false)) {
+                phase -= 30
             }
         }
     }
